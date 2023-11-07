@@ -26,10 +26,10 @@ namespace AsusFanControl
             AsusWinIO64.HealthyTable_SetFanTestMode((char)(value > 0 ? 0x01 : 0x00));
         }
 
-        public void SetFanSpeed(int percent)
+        public void SetFanSpeed(int percent, byte fanIndex = 0)
         {
             var value = (byte)(percent / 100.0f * 255);
-            SetFanSpeed(value);
+            SetFanSpeed(value, fanIndex);
         }
 
         public void SetFansSpeed(byte value)
@@ -66,6 +66,16 @@ namespace AsusFanControl
             }
 
             return fanSpeeds;
+        }
+
+        public int HealthyTable_FanCounts()
+        {
+            return AsusWinIO64.HealthyTable_FanCounts();
+        }
+
+        public ulong Thermal_Read_Cpu_Temperature()
+        {
+            return AsusWinIO64.Thermal_Read_Cpu_Temperature();
         }
     }
 }

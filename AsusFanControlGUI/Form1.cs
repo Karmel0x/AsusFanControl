@@ -14,31 +14,54 @@ namespace AsusFanControlGUI
     public partial class Form1 : Form
     {
         AsusControl asusControl = new AsusControl();
+        int fanSpeed = 0;
 
         public Form1()
         {
             InitializeComponent();
+
+            trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
         }
 
-        private void setFanSpeed(int value)
+        private void setFanSpeed()
         {
-            if (value < 40)
+            var value = trackBarFanSpeed.Value;
+            Properties.Settings.Default.fanSpeed = value;
+            Properties.Settings.Default.Save();
+
+            if (!checkBoxTurnOn.Checked)
                 value = 0;
-            if (value > 99)
+            else if(value < 40)
+                value = 0;
+            else if (value > 99)
                 value = 99;
 
-            labelValue.Text = value == 0 ? "turned off (set value between 40 and 100)" : value.ToString();
+            if (!checkBoxTurnOn.Checked)
+                labelValue.Text = "turned off";
+            else if (value == 0)
+                labelValue.Text = "turned off (set value between 40 and 100)";
+            else
+                labelValue.Text = value.ToString();
+
+            if (fanSpeed == value)
+                return;
+
+            fanSpeed = value;
+
             asusControl.SetFansSpeed(value);
         }
 
         private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
         {
-            setFanSpeed(trackBar1.Value);
+            setFanSpeed();
         }
 
         private void trackBar1_KeyUp(object sender, KeyEventArgs e)
         {
-            setFanSpeed(trackBar1.Value);
+            if (e.KeyCode != Keys.Left && e.KeyCode != Keys.Right)
+                return;
+
+            setFanSpeed();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,5 +69,14 @@ namespace AsusFanControlGUI
             labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
         }
 
+        private void checkBoxTurnOn_CheckedChanged(object sender, EventArgs e)
+        {
+            setFanSpeed();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
+        }
     }
 }
