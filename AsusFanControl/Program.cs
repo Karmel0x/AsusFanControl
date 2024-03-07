@@ -37,7 +37,7 @@ namespace AsusFanControl
                 {
                     var newSpeedStr = arg.Split('=')[1];
                     var newSpeed = int.Parse(newSpeedStr);
-                    asusControl.SetFansSpeed(newSpeed);
+                    asusControl.SetFanSpeeds(newSpeed);
 
                     if(newSpeed == 0)
                         Console.WriteLine("Test mode turned off");

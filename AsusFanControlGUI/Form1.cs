@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AsusFanControl;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AsusFanControlGUI
 {
@@ -19,8 +20,34 @@ namespace AsusFanControlGUI
         public Form1()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
+            toolStripMenuItemTurnOffControlOnExit.Checked = Properties.Settings.Default.turnOffControlOnExit;
+            toolStripMenuItemForbidUnsafeSettings.Checked = Properties.Settings.Default.forbidUnsafeSettings;
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
+        }
+
+        private void OnProcessExit(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.turnOffControlOnExit)
+                asusControl.SetFanSpeeds(0);
+        }
+
+        private void toolStripMenuItemTurnOffControlOnExit_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.turnOffControlOnExit = toolStripMenuItemTurnOffControlOnExit.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void toolStripMenuItemForbidUnsafeSettings_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.forbidUnsafeSettings = toolStripMenuItemForbidUnsafeSettings.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void toolStripMenuItemCheckForUpdates_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Karmel0x/AsusFanControl/releases");
         }
 
         private void setFanSpeed()
@@ -31,15 +58,9 @@ namespace AsusFanControlGUI
 
             if (!checkBoxTurnOn.Checked)
                 value = 0;
-            else if(value < 40)
-                value = 0;
-            else if (value > 99)
-                value = 99;
 
-            if (!checkBoxTurnOn.Checked)
+            if (value == 0)
                 labelValue.Text = "turned off";
-            else if (value == 0)
-                labelValue.Text = "turned off (set value between 40 and 100)";
             else
                 labelValue.Text = value.ToString();
 
@@ -48,30 +69,38 @@ namespace AsusFanControlGUI
 
             fanSpeed = value;
 
-            asusControl.SetFansSpeed(value);
-        }
-
-        private void trackBar1_MouseCaptureChanged(object sender, EventArgs e)
-        {
-            setFanSpeed();
-        }
-
-        private void trackBar1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode != Keys.Left && e.KeyCode != Keys.Right)
-                return;
-
-            setFanSpeed();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
+            asusControl.SetFanSpeeds(value);
         }
 
         private void checkBoxTurnOn_CheckedChanged(object sender, EventArgs e)
         {
             setFanSpeed();
+        }
+
+        private void trackBarFanSpeed_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.forbidUnsafeSettings)
+            {
+                if (trackBarFanSpeed.Value < 40)
+                    trackBarFanSpeed.Value = 40;
+                else if (trackBarFanSpeed.Value > 99)
+                    trackBarFanSpeed.Value = 99;
+            }
+
+            setFanSpeed();
+        }
+
+        private void trackBarFanSpeed_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Left && e.KeyCode != Keys.Right)
+                return;
+
+            trackBarFanSpeed_MouseCaptureChanged(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
         }
 
         private void button2_Click(object sender, EventArgs e)

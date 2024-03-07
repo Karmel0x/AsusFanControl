@@ -32,7 +32,7 @@ namespace AsusFanControl
             SetFanSpeed(value, fanIndex);
         }
 
-        public void SetFansSpeed(byte value)
+        public void SetFanSpeeds(byte value)
         {
             var fanCount = AsusWinIO64.HealthyTable_FanCounts();
             for(byte fanIndex = 0; fanIndex < fanCount; fanIndex++)
@@ -41,10 +41,10 @@ namespace AsusFanControl
             }
         }
 
-        public void SetFansSpeed(int percent)
+        public void SetFanSpeeds(int percent)
         {
             var value = (byte)(percent / 100.0f * 255);
-            SetFansSpeed(value);
+            SetFanSpeeds(value);
         }
 
         public int GetFanSpeed(byte fanIndex = 0)

@@ -34,5 +34,29 @@ namespace AsusFanControlGUI.Properties {
                 this["fanSpeed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool turnOffControlOnExit {
+            get {
+                return ((bool)(this["turnOffControlOnExit"]));
+            }
+            set {
+                this["turnOffControlOnExit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool forbidUnsafeSettings {
+            get {
+                return ((bool)(this["forbidUnsafeSettings"]));
+            }
+            set {
+                this["forbidUnsafeSettings"] = value;
+            }
+        }
     }
 }

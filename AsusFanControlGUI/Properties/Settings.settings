@@ -5,5 +5,11 @@
     <Setting Name="fanSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
+    <Setting Name="turnOffControlOnExit" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="forbidUnsafeSettings" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
