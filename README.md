@@ -31,3 +31,5 @@ Included `AsusWinIO64.dll` is licenced to `(c) ASUSTek COMPUTER INC.` which can 
 
 Confirmed compatibility: 
 - ASUS VivoBook 15 X512FL
+- ASUS Vivobook Pro 16X K6604
+- ASUS TUF Gaming FX505D
