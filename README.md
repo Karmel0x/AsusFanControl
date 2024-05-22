@@ -4,9 +4,10 @@
 Go to [releases](../../releases)
 
 ### Run
+_The ASUS System Analysis (AsusSystemAnalysis.exe) service **must be running** in order for the controller to work_
 
 <details>
-    <summary>Command line: `AsusFanControl.exe`</summary>
+    <summary>[Expand] Command line: `AsusFanControl.exe`</summary>
     
     AsusFanControl.exe <args>
         --get-fan-speeds
