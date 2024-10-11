@@ -16,6 +16,7 @@ namespace AsusFanControlGUI
     {
         AsusControl asusControl = new AsusControl();
         int fanSpeed = 0;
+        private Timer timer;
 
         public Form1()
         {
@@ -25,6 +26,12 @@ namespace AsusFanControlGUI
             toolStripMenuItemTurnOffControlOnExit.Checked = Properties.Settings.Default.turnOffControlOnExit;
             toolStripMenuItemForbidUnsafeSettings.Checked = Properties.Settings.Default.forbidUnsafeSettings;
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
+
+            timer = new Timer();
+            timer.Interval = 2000; // Set interval to 2 seconds (2000 milliseconds)
+            timer.Tick += new EventHandler(OnTimedEvent);
+            timer.Start();
+
         }
 
         private void OnProcessExit(object sender, EventArgs e)
@@ -106,6 +113,28 @@ namespace AsusFanControlGUI
         private void button2_Click(object sender, EventArgs e)
         {
             labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
+        }
+
+        private void OnTimedEvent(object sender, EventArgs e)
+        {
+            // Call the update method every 2 seconds
+            updateFanSpeedandTemp();
+        }
+
+
+        private void updateFanSpeedandTemp()
+        {
+            // Update the RPM label
+            labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
+
+            // Update the CPU temperature label
+            labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()} °C";
+        }
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
