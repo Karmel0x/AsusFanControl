@@ -1,0 +1,12 @@
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.csproj.AssemblyReference.cache
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\bin\x64\Debug\AsusWinIO64.dll
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\bin\x64\Debug\AsusFanControlGUI.exe.config
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\bin\x64\Debug\AsusFanControlGUI.exe
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\bin\x64\Debug\AsusFanControlGUI.pdb
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.Form1.resources
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.Properties.Resources.resources
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.csproj.GenerateResource.cache
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.csproj.CoreCompileInputs.cache
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanC.4AD4544C.Up2Date
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.exe
+C:\Users\Lonewolf\Downloads\AsusFanControl-master\AsusFanControl-master\AsusFanControlGUI\obj\x64\Debug\AsusFanControlGUI.pdb
