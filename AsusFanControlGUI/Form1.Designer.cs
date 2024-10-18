@@ -33,16 +33,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelValue = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonRefreshRPM = new System.Windows.Forms.Button();
             this.labelRPM = new System.Windows.Forms.Label();
             this.checkBoxTurnOn = new System.Windows.Forms.CheckBox();
             this.labelCPUTemp = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonRefreshCPUTemp = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemTurnOffControlOnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemForbidUnsafeSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMinimizeToTrayOnClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemAutoRefreshStats = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFanSpeed)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -86,15 +88,15 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Current RPM:";
             // 
-            // button1
+            // buttonRefreshRPM
             // 
-            this.button1.Location = new System.Drawing.Point(12, 134);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(22, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "↻";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buttonRefreshRPM.Location = new System.Drawing.Point(12, 134);
+            this.buttonRefreshRPM.Name = "buttonRefreshRPM";
+            this.buttonRefreshRPM.Size = new System.Drawing.Size(22, 23);
+            this.buttonRefreshRPM.TabIndex = 4;
+            this.buttonRefreshRPM.Text = "↻";
+            this.buttonRefreshRPM.UseVisualStyleBackColor = true;
+            this.buttonRefreshRPM.Click += new System.EventHandler(this.buttonRefreshRPM_Click);
             // 
             // labelRPM
             // 
@@ -125,15 +127,15 @@
             this.labelCPUTemp.TabIndex = 9;
             this.labelCPUTemp.Text = "-";
             // 
-            // button2
+            // buttonRefreshCPUTemp
             // 
-            this.button2.Location = new System.Drawing.Point(12, 163);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(22, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "↻";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonRefreshCPUTemp.Location = new System.Drawing.Point(12, 163);
+            this.buttonRefreshCPUTemp.Name = "buttonRefreshCPUTemp";
+            this.buttonRefreshCPUTemp.Size = new System.Drawing.Size(22, 23);
+            this.buttonRefreshCPUTemp.TabIndex = 8;
+            this.buttonRefreshCPUTemp.Text = "↻";
+            this.buttonRefreshCPUTemp.UseVisualStyleBackColor = true;
+            this.buttonRefreshCPUTemp.Click += new System.EventHandler(this.buttonRefreshCPUTemp_Click);
             // 
             // label4
             // 
@@ -159,7 +161,9 @@
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemTurnOffControlOnExit,
-            this.toolStripMenuItemForbidUnsafeSettings});
+            this.toolStripMenuItemForbidUnsafeSettings,
+            this.toolStripMenuItemMinimizeToTrayOnClose,
+            this.toolStripMenuItemAutoRefreshStats});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
             this.toolStripMenuItem1.Text = "Advanced";
@@ -168,7 +172,7 @@
             // 
             this.toolStripMenuItemTurnOffControlOnExit.CheckOnClick = true;
             this.toolStripMenuItemTurnOffControlOnExit.Name = "toolStripMenuItemTurnOffControlOnExit";
-            this.toolStripMenuItemTurnOffControlOnExit.Size = new System.Drawing.Size(196, 22);
+            this.toolStripMenuItemTurnOffControlOnExit.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemTurnOffControlOnExit.Text = "Turn off control on exit";
             this.toolStripMenuItemTurnOffControlOnExit.CheckedChanged += new System.EventHandler(this.toolStripMenuItemTurnOffControlOnExit_CheckedChanged);
             // 
@@ -176,9 +180,25 @@
             // 
             this.toolStripMenuItemForbidUnsafeSettings.CheckOnClick = true;
             this.toolStripMenuItemForbidUnsafeSettings.Name = "toolStripMenuItemForbidUnsafeSettings";
-            this.toolStripMenuItemForbidUnsafeSettings.Size = new System.Drawing.Size(196, 22);
+            this.toolStripMenuItemForbidUnsafeSettings.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemForbidUnsafeSettings.Text = "Forbid unsafe settings";
             this.toolStripMenuItemForbidUnsafeSettings.CheckedChanged += new System.EventHandler(this.toolStripMenuItemForbidUnsafeSettings_CheckedChanged);
+            // 
+            // toolStripMenuItemMinimizeToTrayOnClose
+            // 
+            this.toolStripMenuItemMinimizeToTrayOnClose.CheckOnClick = true;
+            this.toolStripMenuItemMinimizeToTrayOnClose.Name = "toolStripMenuItemMinimizeToTrayOnClose";
+            this.toolStripMenuItemMinimizeToTrayOnClose.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemMinimizeToTrayOnClose.Text = "Minimize to tray on close";
+            this.toolStripMenuItemMinimizeToTrayOnClose.Click += new System.EventHandler(this.toolStripMenuItemMinimizeToTrayOnClose_Click);
+            // 
+            // toolStripMenuItemAutoRefreshStats
+            // 
+            this.toolStripMenuItemAutoRefreshStats.CheckOnClick = true;
+            this.toolStripMenuItemAutoRefreshStats.Name = "toolStripMenuItemAutoRefreshStats";
+            this.toolStripMenuItemAutoRefreshStats.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemAutoRefreshStats.Text = "Auto refresh stats";
+            this.toolStripMenuItemAutoRefreshStats.Click += new System.EventHandler(this.toolStripMenuItemAutoRefreshStats_Click);
             // 
             // toolStripMenuItemCheckForUpdates
             // 
@@ -193,11 +213,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 198);
             this.Controls.Add(this.labelCPUTemp);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonRefreshCPUTemp);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBoxTurnOn);
             this.Controls.Add(this.labelRPM);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonRefreshRPM);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.labelValue);
             this.Controls.Add(this.label1);
@@ -207,6 +227,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Asus Fan Control";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFanSpeed)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -221,17 +243,19 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelValue;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonRefreshRPM;
         private System.Windows.Forms.Label labelRPM;
         private System.Windows.Forms.CheckBox checkBoxTurnOn;
         private System.Windows.Forms.Label labelCPUTemp;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonRefreshCPUTemp;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTurnOffControlOnExit;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemForbidUnsafeSettings;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCheckForUpdates;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMinimizeToTrayOnClose;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
     }
 }
 

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AsusFanControl;
+using System;
 using System.Windows.Forms;
-using AsusFanControl;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AsusFanControlGUI
 {
@@ -16,6 +8,8 @@ namespace AsusFanControlGUI
     {
         AsusControl asusControl = new AsusControl();
         int fanSpeed = 0;
+        Timer timer;
+        NotifyIcon trayIcon;
 
         public Form1()
         {
@@ -24,6 +18,8 @@ namespace AsusFanControlGUI
 
             toolStripMenuItemTurnOffControlOnExit.Checked = Properties.Settings.Default.turnOffControlOnExit;
             toolStripMenuItemForbidUnsafeSettings.Checked = Properties.Settings.Default.forbidUnsafeSettings;
+            toolStripMenuItemMinimizeToTrayOnClose.Checked = Properties.Settings.Default.minimizeToTrayOnClose;
+            toolStripMenuItemAutoRefreshStats.Checked = Properties.Settings.Default.autoRefreshStats;
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
         }
 
@@ -31,6 +27,70 @@ namespace AsusFanControlGUI
         {
             if (Properties.Settings.Default.turnOffControlOnExit)
                 asusControl.SetFanSpeeds(0);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            timerRefreshStats();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Properties.Settings.Default.minimizeToTrayOnClose && Visible)
+            {
+                if(trayIcon == null)
+                {
+                    trayIcon = new NotifyIcon()
+                    {
+                        Icon = Icon,
+                        ContextMenu = new ContextMenu(new MenuItem[] {
+                            new MenuItem("Show", (s1, e1) =>
+                            {
+                                trayIcon.Visible = false;
+                                Show();
+                            }),
+                            new MenuItem("Exit", (s1, e1) =>
+                            {
+                                trayIcon.Visible = false;
+                                Close();
+                            }),
+                        }),
+                    };
+
+                    trayIcon.Click += (s1, e1) =>
+                    {
+                        trayIcon.Visible = false;
+                        Show();
+                    };
+                }
+
+                trayIcon.Visible = true;
+                e.Cancel = true;
+                Hide();
+            }
+        }
+
+        private void timerRefreshStats()
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer = null;
+            }
+
+            if (!Properties.Settings.Default.autoRefreshStats)
+                return;
+
+            timer = new Timer();
+            timer.Interval = 2000;
+            timer.Tick += new EventHandler(TimerEventProcessor);
+            timer.Start();
+        }
+
+        private void TimerEventProcessor(object sender, EventArgs e)
+        {
+            buttonRefreshRPM_Click(sender, e);
+            buttonRefreshCPUTemp_Click(sender, e);
         }
 
         private void toolStripMenuItemTurnOffControlOnExit_CheckedChanged(object sender, EventArgs e)
@@ -43,6 +103,20 @@ namespace AsusFanControlGUI
         {
             Properties.Settings.Default.forbidUnsafeSettings = toolStripMenuItemForbidUnsafeSettings.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void toolStripMenuItemMinimizeToTrayOnClose_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.minimizeToTrayOnClose = toolStripMenuItemMinimizeToTrayOnClose.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void toolStripMenuItemAutoRefreshStats_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.autoRefreshStats = toolStripMenuItemAutoRefreshStats.Checked;
+            Properties.Settings.Default.Save();
+
+            timerRefreshStats();
         }
 
         private void toolStripMenuItemCheckForUpdates_Click(object sender, EventArgs e)
@@ -98,14 +172,15 @@ namespace AsusFanControlGUI
             trackBarFanSpeed_MouseCaptureChanged(sender, e);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonRefreshRPM_Click(object sender, EventArgs e)
         {
             labelRPM.Text = string.Join(" ", asusControl.GetFanSpeeds());
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonRefreshCPUTemp_Click(object sender, EventArgs e)
         {
             labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
         }
+
     }
 }

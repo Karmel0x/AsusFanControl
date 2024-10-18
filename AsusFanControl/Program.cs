@@ -1,5 +1,4 @@
 ﻿using System;
-using AsusSystemAnalysis;
 
 namespace AsusFanControl
 {

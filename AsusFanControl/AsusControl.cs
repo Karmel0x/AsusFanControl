@@ -19,11 +19,14 @@ namespace AsusFanControl
             AsusWinIO64.ShutdownWinIo();
         }
 
-        public void SetFanSpeed(byte value, byte fanIndex = 0)
+        public async void SetFanSpeed(byte value, byte fanIndex = 0)
         {
             AsusWinIO64.HealthyTable_SetFanIndex(fanIndex);
+            await Task.Delay(20);
+
             AsusWinIO64.HealthyTable_SetFanPwmDuty(value);
             AsusWinIO64.HealthyTable_SetFanTestMode((char)(value > 0 ? 0x01 : 0x00));
+            await Task.Delay(20);
         }
 
         public void SetFanSpeed(int percent, byte fanIndex = 0)
