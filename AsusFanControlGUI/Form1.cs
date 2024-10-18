@@ -153,6 +153,7 @@ namespace AsusFanControlGUI
         private void checkBoxTurnOn_CheckedChanged(object sender, EventArgs e)
         {
             setFanSpeed();
+            setFanSpeed();
         }
 
         private void trackBarFanSpeed_MouseCaptureChanged(object sender, EventArgs e)
