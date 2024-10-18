@@ -51,14 +51,18 @@ namespace AsusFanControlGUI
                             }),
                             new MenuItem("Exit", (s1, e1) =>
                             {
-                                trayIcon.Visible = false;
                                 Close();
+                                trayIcon.Visible = false;
+                                Application.Exit();
                             }),
                         }),
                     };
 
-                    trayIcon.Click += (s1, e1) =>
+                    trayIcon.MouseClick += (s1, e1) =>
                     {
+                        if (e1.Button != MouseButtons.Left)
+                            return;
+
                         trayIcon.Visible = false;
                         Show();
                     };
