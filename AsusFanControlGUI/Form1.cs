@@ -143,6 +143,14 @@ namespace AsusFanControlGUI
 
         private void toolStripMenuItemAutoRefreshStats_Click(object sender, EventArgs e)
         {
+            if (fanCurveMode && fanCurve.IsEnabled && !toolStripMenuItemAutoRefreshStats.Checked)
+            {
+                toolStripMenuItemAutoRefreshStats.Checked = true;
+                MessageBox.Show("Auto refresh stats cannot be disabled while fan curve is active.", 
+                    "Fan Curve Active", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            
             Properties.Settings.Default.autoRefreshStats = toolStripMenuItemAutoRefreshStats.Checked;
             Properties.Settings.Default.Save();
 
@@ -238,6 +246,14 @@ namespace AsusFanControlGUI
             {
                 checkBoxTurnOn.Checked = true;
                 trackBarFanSpeed.Enabled = false;
+                
+                if (!toolStripMenuItemAutoRefreshStats.Checked)
+                {
+                    toolStripMenuItemAutoRefreshStats.Checked = true;
+                    Properties.Settings.Default.autoRefreshStats = true;
+                    Properties.Settings.Default.Save();
+                    timerRefreshStats();
+                }
                 
                 var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
                 var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
