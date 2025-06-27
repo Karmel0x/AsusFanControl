@@ -7,9 +7,11 @@ namespace AsusFanControlGUI
     public partial class Form1 : Form
     {
         AsusControl asusControl = new AsusControl();
+        FanCurve fanCurve = new FanCurve();
         int fanSpeed = 0;
         Timer timer;
         NotifyIcon trayIcon;
+        bool fanCurveMode = false;
 
         public Form1()
         {
@@ -95,6 +97,20 @@ namespace AsusFanControlGUI
         {
             buttonRefreshRPM_Click(sender, e);
             buttonRefreshCPUTemp_Click(sender, e);
+            
+            if (fanCurveMode && fanCurve.IsEnabled)
+            {
+                var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
+                var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                
+                if (targetSpeed != fanSpeed)
+                {
+                    fanSpeed = targetSpeed;
+                    asusControl.SetFanSpeeds(targetSpeed);
+                    trackBarFanSpeed.Value = targetSpeed;
+                    labelValue.Text = targetSpeed.ToString();
+                }
+            }
         }
 
         private void toolStripMenuItemTurnOffControlOnExit_CheckedChanged(object sender, EventArgs e)
@@ -184,6 +200,31 @@ namespace AsusFanControlGUI
         private void buttonRefreshCPUTemp_Click(object sender, EventArgs e)
         {
             labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
+        }
+
+        private void checkBoxFanCurve_CheckedChanged(object sender, EventArgs e)
+        {
+            fanCurveMode = checkBoxFanCurve.Checked;
+            fanCurve.IsEnabled = fanCurveMode;
+            
+            if (fanCurveMode)
+            {
+                checkBoxTurnOn.Checked = true;
+                trackBarFanSpeed.Enabled = false;
+            }
+            else
+            {
+                trackBarFanSpeed.Enabled = true;
+            }
+        }
+
+        private void buttonFanCurveSettings_Click(object sender, EventArgs e)
+        {
+            var settingsForm = new FanCurveSettingsForm(fanCurve);
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+                fanCurve = settingsForm.FanCurve;
+            }
         }
 
     }

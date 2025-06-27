@@ -7,6 +7,62 @@ using System.Threading.Tasks;
 
 namespace AsusFanControl
 {
+    public class FanCurvePoint
+    {
+        public int Temperature { get; set; }
+        public int FanSpeed { get; set; }
+        
+        public FanCurvePoint(int temperature, int fanSpeed)
+        {
+            Temperature = temperature;
+            FanSpeed = fanSpeed;
+        }
+    }
+
+    public class FanCurve
+    {
+        public List<FanCurvePoint> Points { get; set; }
+        public bool IsEnabled { get; set; }
+        
+        public FanCurve()
+        {
+            Points = new List<FanCurvePoint>
+            {
+                new FanCurvePoint(30, 30),
+                new FanCurvePoint(50, 50),
+                new FanCurvePoint(70, 80),
+                new FanCurvePoint(90, 100)
+            };
+            IsEnabled = false;
+        }
+        
+        public int GetFanSpeedForTemperature(int temperature)
+        {
+            if (!IsEnabled || Points.Count == 0)
+                return 0;
+                
+            Points.Sort((a, b) => a.Temperature.CompareTo(b.Temperature));
+            
+            if (temperature <= Points[0].Temperature)
+                return Points[0].FanSpeed;
+                
+            if (temperature >= Points[Points.Count - 1].Temperature)
+                return Points[Points.Count - 1].FanSpeed;
+                
+            for (int i = 0; i < Points.Count - 1; i++)
+            {
+                if (temperature >= Points[i].Temperature && temperature <= Points[i + 1].Temperature)
+                {
+                    double ratio = (double)(temperature - Points[i].Temperature) / 
+                                   (Points[i + 1].Temperature - Points[i].Temperature);
+                    return (int)(Points[i].FanSpeed + ratio * (Points[i + 1].FanSpeed - Points[i].FanSpeed));
+                }
+            }
+            
+            return 0;
+        }
+    }
+
     public class AsusControl
     {
         public AsusControl()

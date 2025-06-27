@@ -45,6 +45,8 @@
             this.toolStripMenuItemForbidUnsafeSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMinimizeToTrayOnClose = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAutoRefreshStats = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxFanCurve = new System.Windows.Forms.CheckBox();
+            this.buttonFanCurveSettings = new System.Windows.Forms.Button();
             this.toolStripMenuItemCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFanSpeed)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -200,6 +202,27 @@
             this.toolStripMenuItemAutoRefreshStats.Text = "Auto refresh stats";
             this.toolStripMenuItemAutoRefreshStats.Click += new System.EventHandler(this.toolStripMenuItemAutoRefreshStats_Click);
             // 
+            // checkBoxFanCurve
+            // 
+            this.checkBoxFanCurve.AutoSize = true;
+            this.checkBoxFanCurve.Location = new System.Drawing.Point(134, 37);
+            this.checkBoxFanCurve.Name = "checkBoxFanCurve";
+            this.checkBoxFanCurve.Size = new System.Drawing.Size(76, 17);
+            this.checkBoxFanCurve.TabIndex = 11;
+            this.checkBoxFanCurve.Text = "Fan Curve";
+            this.checkBoxFanCurve.UseVisualStyleBackColor = true;
+            this.checkBoxFanCurve.CheckedChanged += new System.EventHandler(this.checkBoxFanCurve_CheckedChanged);
+            // 
+            // buttonFanCurveSettings
+            // 
+            this.buttonFanCurveSettings.Location = new System.Drawing.Point(216, 35);
+            this.buttonFanCurveSettings.Name = "buttonFanCurveSettings";
+            this.buttonFanCurveSettings.Size = new System.Drawing.Size(60, 23);
+            this.buttonFanCurveSettings.TabIndex = 12;
+            this.buttonFanCurveSettings.Text = "Settings";
+            this.buttonFanCurveSettings.UseVisualStyleBackColor = true;
+            this.buttonFanCurveSettings.Click += new System.EventHandler(this.buttonFanCurveSettings_Click);
+            // 
             // toolStripMenuItemCheckForUpdates
             // 
             this.toolStripMenuItemCheckForUpdates.Name = "toolStripMenuItemCheckForUpdates";
@@ -212,6 +235,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 198);
+            this.Controls.Add(this.buttonFanCurveSettings);
+            this.Controls.Add(this.checkBoxFanCurve);
             this.Controls.Add(this.labelCPUTemp);
             this.Controls.Add(this.buttonRefreshCPUTemp);
             this.Controls.Add(this.label4);
@@ -256,6 +281,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCheckForUpdates;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMinimizeToTrayOnClose;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
+        private System.Windows.Forms.CheckBox checkBoxFanCurve;
+        private System.Windows.Forms.Button buttonFanCurveSettings;
     }
 }
 
