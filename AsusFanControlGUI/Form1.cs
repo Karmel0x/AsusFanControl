@@ -246,6 +246,16 @@ namespace AsusFanControlGUI
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
                 fanCurve = settingsForm.FanCurve;
+                
+                if (fanCurveMode && fanCurve.IsEnabled && checkBoxTurnOn.Checked)
+                {
+                    var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
+                    var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                    fanSpeed = targetSpeed;
+                    asusControl.SetFanSpeeds(targetSpeed);
+                    trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
+                    labelValue.Text = targetSpeed.ToString();
+                }
             }
         }
 
