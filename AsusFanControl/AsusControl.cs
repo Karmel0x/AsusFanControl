@@ -61,6 +61,52 @@ namespace AsusFanControl
             
             return 0;
         }
+        
+        public string SerializeToString()
+        {
+            Points.Sort((a, b) => a.Temperature.CompareTo(b.Temperature));
+            return string.Join(";", Points.Select(p => $"{p.Temperature},{p.FanSpeed}"));
+        }
+        
+        public static FanCurve DeserializeFromString(string data)
+        {
+            var curve = new FanCurve();
+            curve.Points.Clear();
+            
+            if (string.IsNullOrEmpty(data))
+                return curve;
+                
+            try
+            {
+                var points = data.Split(';');
+                foreach (var point in points)
+                {
+                    var parts = point.Split(',');
+                    if (parts.Length == 2 && 
+                        int.TryParse(parts[0], out int temp) && 
+                        int.TryParse(parts[1], out int speed))
+                    {
+                        curve.Points.Add(new FanCurvePoint(temp, speed));
+                    }
+                }
+            }
+            catch
+            {
+                curve.Points.Clear();
+                curve.Points.Add(new FanCurvePoint(30, 30));
+                curve.Points.Add(new FanCurvePoint(50, 50));
+                curve.Points.Add(new FanCurvePoint(70, 80));
+                curve.Points.Add(new FanCurvePoint(90, 100));
+            }
+            
+            if (curve.Points.Count == 0)
+            {
+                curve.Points.Add(new FanCurvePoint(30, 30));
+                curve.Points.Add(new FanCurvePoint(90, 100));
+            }
+            
+            return curve;
+        }
     }
 
     public class AsusControl

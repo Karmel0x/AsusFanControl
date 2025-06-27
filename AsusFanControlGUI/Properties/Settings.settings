@@ -17,5 +17,11 @@
     <Setting Name="autoRefreshStats" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="fanCurveEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="fanCurveData" Type="System.String" Scope="User">
+      <Value Profile="(Default)">30,30;50,50;70,80;90,100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

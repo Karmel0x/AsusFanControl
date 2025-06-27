@@ -23,6 +23,16 @@ namespace AsusFanControlGUI
             toolStripMenuItemMinimizeToTrayOnClose.Checked = Properties.Settings.Default.minimizeToTrayOnClose;
             toolStripMenuItemAutoRefreshStats.Checked = Properties.Settings.Default.autoRefreshStats;
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
+            
+            fanCurve = FanCurve.DeserializeFromString(Properties.Settings.Default.fanCurveData);
+            fanCurveMode = Properties.Settings.Default.fanCurveEnabled;
+            fanCurve.IsEnabled = fanCurveMode;
+            checkBoxFanCurve.Checked = fanCurveMode;
+            
+            if (fanCurveMode)
+            {
+                trackBarFanSpeed.Enabled = false;
+            }
         }
 
         private void OnProcessExit(object sender, EventArgs e)
@@ -221,6 +231,9 @@ namespace AsusFanControlGUI
             fanCurveMode = checkBoxFanCurve.Checked;
             fanCurve.IsEnabled = fanCurveMode;
             
+            Properties.Settings.Default.fanCurveEnabled = fanCurveMode;
+            Properties.Settings.Default.Save();
+            
             if (fanCurveMode)
             {
                 checkBoxTurnOn.Checked = true;
@@ -246,6 +259,9 @@ namespace AsusFanControlGUI
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
                 fanCurve = settingsForm.FanCurve;
+                
+                Properties.Settings.Default.fanCurveData = fanCurve.SerializeToString();
+                Properties.Settings.Default.Save();
                 
                 if (fanCurveMode && fanCurve.IsEnabled && checkBoxTurnOn.Checked)
                 {
