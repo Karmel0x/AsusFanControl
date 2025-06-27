@@ -146,6 +146,9 @@ namespace AsusFanControlGUI
 
         private void setFanSpeed()
         {
+            if (fanCurveMode && fanCurve.IsEnabled)
+                return;
+
             var value = trackBarFanSpeed.Value;
             Properties.Settings.Default.fanSpeed = value;
             Properties.Settings.Default.Save();
@@ -168,6 +171,17 @@ namespace AsusFanControlGUI
 
         private void checkBoxTurnOn_CheckedChanged(object sender, EventArgs e)
         {
+            if (fanCurveMode && fanCurve.IsEnabled)
+            {
+                if (!checkBoxTurnOn.Checked)
+                {
+                    asusControl.SetFanSpeeds(0);
+                    fanSpeed = 0;
+                    labelValue.Text = "turned off";
+                }
+                return;
+            }
+            
             setFanSpeed();
         }
 
@@ -211,10 +225,18 @@ namespace AsusFanControlGUI
             {
                 checkBoxTurnOn.Checked = true;
                 trackBarFanSpeed.Enabled = false;
+                
+                var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
+                var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                fanSpeed = targetSpeed;
+                asusControl.SetFanSpeeds(targetSpeed);
+                trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
+                labelValue.Text = targetSpeed.ToString();
             }
             else
             {
                 trackBarFanSpeed.Enabled = true;
+                setFanSpeed();
             }
         }
 
