@@ -21,6 +21,18 @@ GUI: `AsusFanControlGUI.exe`
 
 ![AsusFanControlGUI](https://github.com/Karmel0x/AsusFanControl/assets/25367564/fe197ad0-7079-4d51-ae78-177cb6369e96)
 
+### 🚀 NEW: Automatic Fan Curve Control
+
+You can now set intelligent, dynamic temperature-based fan curves exactly like you would in a top-tier BIOS!
+
+![Fan Curves UI](fan-curve-tab-gui.png)
+
+Features:
+- **Interactive Graphing Editor**: Completely custom-built GUI with draggable nodes.
+- **Background Daemon**: A multithreaded daemon safely manages standard background interpolation.
+- **Custom Profiles**: Create, save, edit, and delete multiple custom curves.
+- **Smart Hysteresis & Safety Defaults**: The fans will gracefully handle spikes and automatically kick up to 100% outside safe operating ranges.
+- **Dark Theme Interface**: A totally remodeled UI following sleek, modern visual guidelines.
 ### Why need it?
 My laptop does not support the [Fan Profile](https://github.com/Karmel0x/AsusFanControl/assets/25367564/924d990a-bf20-4b8d-bf9d-56c460174d99) option, but it often overheats. Looked for apps to control fans, but none is working.
 
