@@ -66,6 +66,7 @@
     <Compile Include="AsusControl.cs" />
     <Compile Include="AsusWinIO64.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="SystemRelaunch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
