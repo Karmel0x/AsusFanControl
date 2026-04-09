@@ -15,9 +15,14 @@ Go to [releases](../../releases)
         --get-fan-speed=fanId (comma separated)
         --set-fan-speed=fanId:0-100 (comma separated, percent value, 0 for turning off test mode)
         --get-cpu-temp
+        --relaunch-system (optional, auto-relaunch via PsExec if needed)
 </details>
 
 GUI: `AsusFanControlGUI.exe`  
+
+> [!NOTE]
+> **SYSTEM requirement (newer ASUS drivers):** On some ASUS System Control Interface driver versions (3.1.41.0+), low-level fan access is restricted to **LocalSystem**.  
+> If fan control doesn't work, place `PsExec64.exe` or `PsExec.exe` next to `AsusFanControlGUI.exe` and start the GUI again — it will relaunch itself as SYSTEM automatically.
 
 ![AsusFanControlGUI](https://github.com/Karmel0x/AsusFanControl/assets/25367564/fe197ad0-7079-4d51-ae78-177cb6369e96)
 

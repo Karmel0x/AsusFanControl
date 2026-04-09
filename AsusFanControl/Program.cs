@@ -1,5 +1,9 @@
 ﻿using System;
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+
 namespace AsusFanControl
 {
     internal static class Program
@@ -10,7 +14,29 @@ namespace AsusFanControl
         [STAThread]
         static int Main(string[] args)
         {
-            if (args.Length < 1)
+            args = args ?? new string[0];
+
+            var filteredArgs = new List<string>();
+            bool isPsExecRelaunch = false;
+            bool autoRelaunch = false;
+
+            foreach (var a in args)
+            {
+                if (string.Equals(a, SystemRelaunch.PsExecRelaunchFlag, StringComparison.OrdinalIgnoreCase))
+                {
+                    isPsExecRelaunch = true;
+                    continue;
+                }
+                if (string.Equals(a, SystemRelaunch.AutoRelaunchFlag, StringComparison.OrdinalIgnoreCase))
+                {
+                    autoRelaunch = true;
+                    continue;
+                }
+
+                filteredArgs.Add(a);
+            }
+
+            if (filteredArgs.Count < 1)
             {
                 Console.WriteLine("Usage: AsusFanControl <args>");
                 Console.WriteLine("\t--get-fan-speeds");
@@ -19,12 +45,35 @@ namespace AsusFanControl
                 Console.WriteLine("\t--get-fan-speed=fanId (comma separated)");
                 Console.WriteLine("\t--set-fan-speed=fanId:0-100 (comma separated, percent value, 0 for turning off test mode)");
                 Console.WriteLine("\t--get-cpu-temp");
+                Console.WriteLine("\t--relaunch-system (optional, auto-relaunch via PsExec if needed)");
                 return 1;
+            }
+
+            if (!isPsExecRelaunch && !SystemRelaunch.IsRunningAsSystem() && !SystemRelaunch.CanAccessFanDriver())
+            {
+                if (autoRelaunch && SystemRelaunch.TryRelaunchAsSystem(filteredArgs.ToArray()))
+                    return 0;
+
+                Console.WriteLine("Fan driver access requires running as SYSTEM (LocalSystem) on some newer ASUS drivers.");
+
+                var psExecPath = SystemRelaunch.FindPsExecPath();
+                if (!string.IsNullOrWhiteSpace(psExecPath))
+                {
+                    var sessionId = Process.GetCurrentProcess().SessionId;
+                    Console.WriteLine("Relaunch example:");
+                    Console.WriteLine(string.Format("  {0} -accepteula -d -s -i {1} AsusFanControl.exe {2}", Path.GetFileName(psExecPath), sessionId, string.Join(" ", filteredArgs.ToArray())));
+                }
+                else
+                {
+                    Console.WriteLine("Place PsExec64.exe / PsExec.exe next to AsusFanControl.exe, or use AsusFanControlGUI (it can self-relaunch).");
+                }
+
+                return 2;
             }
 
             var asusControl = new AsusControl();
 
-            foreach (var arg in args)
+            foreach (var arg in filteredArgs)
             {
                 if (arg.StartsWith("--get-fan-speeds"))
                 {

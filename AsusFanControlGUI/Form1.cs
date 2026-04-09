@@ -6,7 +6,7 @@ namespace AsusFanControlGUI
 {
     public partial class Form1 : Form
     {
-        AsusControl asusControl = new AsusControl();
+        AsusControl asusControl;
         int fanSpeed = 0;
         Timer timer;
         NotifyIcon trayIcon;
@@ -14,6 +14,7 @@ namespace AsusFanControlGUI
         public Form1()
         {
             InitializeComponent();
+            asusControl = new AsusControl();
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
             toolStripMenuItemTurnOffControlOnExit.Checked = Properties.Settings.Default.turnOffControlOnExit;
@@ -31,6 +32,19 @@ namespace AsusFanControlGUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            var fanCount = asusControl.HealthyTable_FanCounts();
+            if (fanCount <= 0)
+            {
+                MessageBox.Show(
+                    "Unable to access ASUS fan driver.\n\n" +
+                    "If you are on a newer ASUS System Control Interface driver, run this app as SYSTEM (LocalSystem).\n" +
+                    "Place PsExec64.exe / PsExec.exe next to AsusFanControlGUI.exe and start again.",
+                    "Asus Fan Control",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+
             timerRefreshStats();
         }
 
