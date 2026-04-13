@@ -5,6 +5,9 @@
     <Setting Name="fanSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
+    <Setting Name="fanControlEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="turnOffControlOnExit" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -16,6 +19,12 @@
     </Setting>
     <Setting Name="autoRefreshStats" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="temperatureCurveEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="temperatureCurve" Type="System.String" Scope="User">
+      <Value Profile="(Default)">45:40;60:55;70:70;80:85;90:99</Value>
     </Setting>
   </Settings>
 </SettingsFile>

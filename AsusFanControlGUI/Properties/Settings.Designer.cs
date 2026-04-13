@@ -34,6 +34,18 @@ namespace AsusFanControlGUI.Properties {
                 this["fanSpeed"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool fanControlEnabled {
+            get {
+                return ((bool)(this["fanControlEnabled"]));
+            }
+            set {
+                this["fanControlEnabled"] = value;
+            }
+        }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -80,6 +92,30 @@ namespace AsusFanControlGUI.Properties {
             }
             set {
                 this["autoRefreshStats"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool temperatureCurveEnabled {
+            get {
+                return ((bool)(this["temperatureCurveEnabled"]));
+            }
+            set {
+                this["temperatureCurveEnabled"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("45:40;60:55;70:70;80:85;90:99")]
+        public string temperatureCurve {
+            get {
+                return ((string)(this["temperatureCurve"]));
+            }
+            set {
+                this["temperatureCurve"] = value;
             }
         }
     }
