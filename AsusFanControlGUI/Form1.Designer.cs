@@ -49,6 +49,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFanSpeed)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
+
+            // ── Neon palette ──────────────────────────────────────────────
+            var clrBack    = System.Drawing.Color.Black;
+            var clrNeon    = System.Drawing.Color.FromArgb(0, 255, 255);   // cyan
+            var clrDim     = System.Drawing.Color.FromArgb(0, 160, 160);   // muted cyan
+            var clrMenuBg  = System.Drawing.Color.FromArgb(10, 10, 10);
+            var fntMain    = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular);
+            var fntValue   = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold);
+
             // 
             // trackBarFanSpeed
             // 
@@ -58,6 +67,8 @@
             this.trackBarFanSpeed.Size = new System.Drawing.Size(300, 45);
             this.trackBarFanSpeed.TabIndex = 0;
             this.trackBarFanSpeed.Value = 100;
+            this.trackBarFanSpeed.BackColor = clrBack;
+            this.trackBarFanSpeed.ForeColor = clrNeon;
             this.trackBarFanSpeed.KeyUp += new System.Windows.Forms.KeyEventHandler(this.trackBarFanSpeed_KeyUp);
             this.trackBarFanSpeed.MouseCaptureChanged += new System.EventHandler(this.trackBarFanSpeed_MouseCaptureChanged);
             // 
@@ -68,16 +79,22 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Current value:";
+            this.label1.Text = "Fan speed:";
+            this.label1.ForeColor = clrDim;
+            this.label1.BackColor = clrBack;
+            this.label1.Font = fntMain;
             // 
             // labelValue
             // 
             this.labelValue.AutoSize = true;
-            this.labelValue.Location = new System.Drawing.Point(91, 110);
+            this.labelValue.Location = new System.Drawing.Point(100, 110);
             this.labelValue.Name = "labelValue";
             this.labelValue.Size = new System.Drawing.Size(10, 13);
             this.labelValue.TabIndex = 2;
             this.labelValue.Text = "-";
+            this.labelValue.ForeColor = clrNeon;
+            this.labelValue.BackColor = clrBack;
+            this.labelValue.Font = fntValue;
             // 
             // label2
             // 
@@ -86,7 +103,10 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Current RPM:";
+            this.label2.Text = "Fan RPM:";
+            this.label2.ForeColor = clrDim;
+            this.label2.BackColor = clrBack;
+            this.label2.Font = fntMain;
             // 
             // buttonRefreshRPM
             // 
@@ -95,7 +115,14 @@
             this.buttonRefreshRPM.Size = new System.Drawing.Size(22, 23);
             this.buttonRefreshRPM.TabIndex = 4;
             this.buttonRefreshRPM.Text = "↻";
-            this.buttonRefreshRPM.UseVisualStyleBackColor = true;
+            this.buttonRefreshRPM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRefreshRPM.FlatAppearance.BorderColor = clrNeon;
+            this.buttonRefreshRPM.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(0, 40, 40);
+            this.buttonRefreshRPM.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(0, 80, 80);
+            this.buttonRefreshRPM.BackColor = clrBack;
+            this.buttonRefreshRPM.ForeColor = clrNeon;
+            this.buttonRefreshRPM.Font = fntMain;
+            this.buttonRefreshRPM.UseVisualStyleBackColor = false;
             this.buttonRefreshRPM.Click += new System.EventHandler(this.buttonRefreshRPM_Click);
             // 
             // labelRPM
@@ -106,6 +133,9 @@
             this.labelRPM.Size = new System.Drawing.Size(10, 13);
             this.labelRPM.TabIndex = 5;
             this.labelRPM.Text = "-";
+            this.labelRPM.ForeColor = clrNeon;
+            this.labelRPM.BackColor = clrBack;
+            this.labelRPM.Font = fntValue;
             // 
             // checkBoxTurnOn
             // 
@@ -115,17 +145,23 @@
             this.checkBoxTurnOn.Size = new System.Drawing.Size(116, 17);
             this.checkBoxTurnOn.TabIndex = 6;
             this.checkBoxTurnOn.Text = "Turn on fan control";
-            this.checkBoxTurnOn.UseVisualStyleBackColor = true;
+            this.checkBoxTurnOn.ForeColor = clrNeon;
+            this.checkBoxTurnOn.BackColor = clrBack;
+            this.checkBoxTurnOn.Font = fntMain;
+            this.checkBoxTurnOn.UseVisualStyleBackColor = false;
             this.checkBoxTurnOn.CheckedChanged += new System.EventHandler(this.checkBoxTurnOn_CheckedChanged);
             // 
             // labelCPUTemp
             // 
             this.labelCPUTemp.AutoSize = true;
-            this.labelCPUTemp.Location = new System.Drawing.Point(141, 168);
+            this.labelCPUTemp.Location = new System.Drawing.Point(160, 168);
             this.labelCPUTemp.Name = "labelCPUTemp";
             this.labelCPUTemp.Size = new System.Drawing.Size(10, 13);
             this.labelCPUTemp.TabIndex = 9;
             this.labelCPUTemp.Text = "-";
+            this.labelCPUTemp.ForeColor = clrNeon;
+            this.labelCPUTemp.BackColor = clrBack;
+            this.labelCPUTemp.Font = fntValue;
             // 
             // buttonRefreshCPUTemp
             // 
@@ -134,7 +170,14 @@
             this.buttonRefreshCPUTemp.Size = new System.Drawing.Size(22, 23);
             this.buttonRefreshCPUTemp.TabIndex = 8;
             this.buttonRefreshCPUTemp.Text = "↻";
-            this.buttonRefreshCPUTemp.UseVisualStyleBackColor = true;
+            this.buttonRefreshCPUTemp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRefreshCPUTemp.FlatAppearance.BorderColor = clrNeon;
+            this.buttonRefreshCPUTemp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(0, 40, 40);
+            this.buttonRefreshCPUTemp.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(0, 80, 80);
+            this.buttonRefreshCPUTemp.BackColor = clrBack;
+            this.buttonRefreshCPUTemp.ForeColor = clrNeon;
+            this.buttonRefreshCPUTemp.Font = fntMain;
+            this.buttonRefreshCPUTemp.UseVisualStyleBackColor = false;
             this.buttonRefreshCPUTemp.Click += new System.EventHandler(this.buttonRefreshCPUTemp_Click);
             // 
             // label4
@@ -144,10 +187,16 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(95, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Current CPU temp:";
+            this.label4.Text = "CPU temp:";
+            this.label4.ForeColor = clrDim;
+            this.label4.BackColor = clrBack;
+            this.label4.Font = fntMain;
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = clrMenuBg;
+            this.menuStrip1.ForeColor = clrNeon;
+            this.menuStrip1.Font = fntMain;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.toolStripMenuItemCheckForUpdates});
@@ -159,14 +208,15 @@
             // 
             // toolStripMenuItem1
             // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
+            this.toolStripMenuItem1.Text = "Advanced";
+            this.toolStripMenuItem1.ForeColor = clrNeon;
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemTurnOffControlOnExit,
             this.toolStripMenuItemForbidUnsafeSettings,
             this.toolStripMenuItemMinimizeToTrayOnClose,
             this.toolStripMenuItemAutoRefreshStats});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
-            this.toolStripMenuItem1.Text = "Advanced";
             // 
             // toolStripMenuItemTurnOffControlOnExit
             // 
@@ -174,6 +224,8 @@
             this.toolStripMenuItemTurnOffControlOnExit.Name = "toolStripMenuItemTurnOffControlOnExit";
             this.toolStripMenuItemTurnOffControlOnExit.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemTurnOffControlOnExit.Text = "Turn off control on exit";
+            this.toolStripMenuItemTurnOffControlOnExit.ForeColor = clrNeon;
+            this.toolStripMenuItemTurnOffControlOnExit.BackColor = clrMenuBg;
             this.toolStripMenuItemTurnOffControlOnExit.CheckedChanged += new System.EventHandler(this.toolStripMenuItemTurnOffControlOnExit_CheckedChanged);
             // 
             // toolStripMenuItemForbidUnsafeSettings
@@ -182,6 +234,8 @@
             this.toolStripMenuItemForbidUnsafeSettings.Name = "toolStripMenuItemForbidUnsafeSettings";
             this.toolStripMenuItemForbidUnsafeSettings.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemForbidUnsafeSettings.Text = "Forbid unsafe settings";
+            this.toolStripMenuItemForbidUnsafeSettings.ForeColor = clrNeon;
+            this.toolStripMenuItemForbidUnsafeSettings.BackColor = clrMenuBg;
             this.toolStripMenuItemForbidUnsafeSettings.CheckedChanged += new System.EventHandler(this.toolStripMenuItemForbidUnsafeSettings_CheckedChanged);
             // 
             // toolStripMenuItemMinimizeToTrayOnClose
@@ -190,6 +244,8 @@
             this.toolStripMenuItemMinimizeToTrayOnClose.Name = "toolStripMenuItemMinimizeToTrayOnClose";
             this.toolStripMenuItemMinimizeToTrayOnClose.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemMinimizeToTrayOnClose.Text = "Minimize to tray on close";
+            this.toolStripMenuItemMinimizeToTrayOnClose.ForeColor = clrNeon;
+            this.toolStripMenuItemMinimizeToTrayOnClose.BackColor = clrMenuBg;
             this.toolStripMenuItemMinimizeToTrayOnClose.Click += new System.EventHandler(this.toolStripMenuItemMinimizeToTrayOnClose_Click);
             // 
             // toolStripMenuItemAutoRefreshStats
@@ -198,6 +254,8 @@
             this.toolStripMenuItemAutoRefreshStats.Name = "toolStripMenuItemAutoRefreshStats";
             this.toolStripMenuItemAutoRefreshStats.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemAutoRefreshStats.Text = "Auto refresh stats";
+            this.toolStripMenuItemAutoRefreshStats.ForeColor = clrNeon;
+            this.toolStripMenuItemAutoRefreshStats.BackColor = clrMenuBg;
             this.toolStripMenuItemAutoRefreshStats.Click += new System.EventHandler(this.toolStripMenuItemAutoRefreshStats_Click);
             // 
             // toolStripMenuItemCheckForUpdates
@@ -205,6 +263,7 @@
             this.toolStripMenuItemCheckForUpdates.Name = "toolStripMenuItemCheckForUpdates";
             this.toolStripMenuItemCheckForUpdates.Size = new System.Drawing.Size(115, 20);
             this.toolStripMenuItemCheckForUpdates.Text = "Check for updates";
+            this.toolStripMenuItemCheckForUpdates.ForeColor = clrNeon;
             this.toolStripMenuItemCheckForUpdates.Click += new System.EventHandler(this.toolStripMenuItemCheckForUpdates_Click);
             // 
             // Form1
@@ -212,6 +271,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 198);
+            this.BackColor = clrBack;
+            this.ForeColor = clrNeon;
+            this.Font = fntMain;
             this.Controls.Add(this.labelCPUTemp);
             this.Controls.Add(this.buttonRefreshCPUTemp);
             this.Controls.Add(this.label4);
@@ -223,7 +285,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBarFanSpeed);
             this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = new System.Drawing.Icon(
+                System.IO.Path.Combine(
+                    System.AppContext.BaseDirectory, "propeller.ico"));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Asus Fan Control";
@@ -234,7 +298,6 @@
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -258,4 +321,3 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
     }
 }
-
