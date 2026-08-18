@@ -1,4 +1,4 @@
-﻿using AsusFanControl;
+using AsusFanControl;
 using System;
 using System.Windows.Forms;
 
@@ -12,6 +12,7 @@ namespace AsusFanControlGUI
         Timer timer;
         NotifyIcon trayIcon;
         bool fanCurveMode = false;
+        int lastReadTemp = 0;
 
         public Form1()
         {
@@ -28,6 +29,9 @@ namespace AsusFanControlGUI
             fanCurveMode = Properties.Settings.Default.fanCurveEnabled;
             fanCurve.IsEnabled = fanCurveMode;
             checkBoxFanCurve.Checked = fanCurveMode;
+            
+            // Populate the refresh interval menu label
+            UpdateRefreshIntervalMenuLabel();
             
             if (fanCurveMode)
             {
@@ -50,24 +54,31 @@ namespace AsusFanControlGUI
         {
             if (Properties.Settings.Default.minimizeToTrayOnClose && Visible)
             {
-                if(trayIcon == null)
+                if (trayIcon == null)
                 {
+                    var showItem = new ToolStripMenuItem("Show");
+                    showItem.Click += (s1, e1) =>
+                    {
+                        trayIcon.Visible = false;
+                        Show();
+                    };
+
+                    var exitItem = new ToolStripMenuItem("Exit");
+                    exitItem.Click += (s1, e1) =>
+                    {
+                        Close();
+                        trayIcon.Visible = false;
+                        Application.Exit();
+                    };
+
+                    var trayMenu = new ContextMenuStrip();
+                    trayMenu.Items.Add(showItem);
+                    trayMenu.Items.Add(exitItem);
+
                     trayIcon = new NotifyIcon()
                     {
                         Icon = Icon,
-                        ContextMenu = new ContextMenu(new MenuItem[] {
-                            new MenuItem("Show", (s1, e1) =>
-                            {
-                                trayIcon.Visible = false;
-                                Show();
-                            }),
-                            new MenuItem("Exit", (s1, e1) =>
-                            {
-                                Close();
-                                trayIcon.Visible = false;
-                                Application.Exit();
-                            }),
-                        }),
+                        ContextMenuStrip = trayMenu,
                     };
 
                     trayIcon.MouseClick += (s1, e1) =>
@@ -98,20 +109,23 @@ namespace AsusFanControlGUI
                 return;
 
             timer = new Timer();
-            timer.Interval = 2000;
+            timer.Interval = Properties.Settings.Default.refreshIntervalMs;
             timer.Tick += new EventHandler(TimerEventProcessor);
             timer.Start();
         }
 
         private void TimerEventProcessor(object sender, EventArgs e)
         {
+            // Fetch RPM and temperature into the UI labels first
             buttonRefreshRPM_Click(sender, e);
             buttonRefreshCPUTemp_Click(sender, e);
             
             if (fanCurveMode && fanCurve.IsEnabled)
             {
-                var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
-                var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                // Use the UI-level temperature that was just read above.
+                // This avoids a second system-level call and keeps the fan curve
+                // operating on the same data the user sees on screen.
+                var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
                 
                 if (targetSpeed != fanSpeed)
                 {
@@ -231,7 +245,11 @@ namespace AsusFanControlGUI
 
         private void buttonRefreshCPUTemp_Click(object sender, EventArgs e)
         {
-            labelCPUTemp.Text = $"{asusControl.Thermal_Read_Cpu_Temperature()}";
+            var rawTemp = asusControl.Thermal_Read_Cpu_Temperature();
+            labelCPUTemp.Text = $"{rawTemp}";
+            // Cache the last read temperature so the fan curve can use it
+            // without making a redundant system-level call
+            lastReadTemp = (int)rawTemp;
         }
 
         private void checkBoxFanCurve_CheckedChanged(object sender, EventArgs e)
@@ -255,8 +273,9 @@ namespace AsusFanControlGUI
                     timerRefreshStats();
                 }
                 
-                var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
-                var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                // Do an immediate read so lastReadTemp is fresh before the timer fires
+                buttonRefreshCPUTemp_Click(sender, e);
+                var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
                 fanSpeed = targetSpeed;
                 asusControl.SetFanSpeeds(targetSpeed);
                 trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
@@ -281,14 +300,34 @@ namespace AsusFanControlGUI
                 
                 if (fanCurveMode && fanCurve.IsEnabled && checkBoxTurnOn.Checked)
                 {
-                    var temp = (int)asusControl.Thermal_Read_Cpu_Temperature();
-                    var targetSpeed = fanCurve.GetFanSpeedForTemperature(temp);
+                    // Use the already-cached UI temperature; no extra system call needed
+                    var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
                     fanSpeed = targetSpeed;
                     asusControl.SetFanSpeeds(targetSpeed);
                     trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
                     labelValue.Text = targetSpeed.ToString();
                 }
             }
+        }
+
+        private void toolStripMenuItemRefreshInterval_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new RefreshIntervalDialog(Properties.Settings.Default.refreshIntervalMs))
+            {
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    Properties.Settings.Default.refreshIntervalMs = dlg.IntervalMs;
+                    Properties.Settings.Default.Save();
+                    UpdateRefreshIntervalMenuLabel();
+                    timerRefreshStats(); // restart timer with new interval
+                }
+            }
+        }
+
+        private void UpdateRefreshIntervalMenuLabel()
+        {
+            var seconds = Properties.Settings.Default.refreshIntervalMs / 1000.0;
+            toolStripMenuItemRefreshInterval.Text = $"Refresh interval: {seconds:0.#}s";
         }
 
     }

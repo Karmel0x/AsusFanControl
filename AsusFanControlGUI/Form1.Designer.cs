@@ -1,4 +1,4 @@
-﻿namespace AsusFanControlGUI
+namespace AsusFanControlGUI
 {
     partial class Form1
     {
@@ -45,6 +45,7 @@
             this.toolStripMenuItemForbidUnsafeSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemMinimizeToTrayOnClose = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAutoRefreshStats = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRefreshInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxFanCurve = new System.Windows.Forms.CheckBox();
             this.buttonFanCurveSettings = new System.Windows.Forms.Button();
             this.toolStripMenuItemCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -165,7 +166,8 @@
             this.toolStripMenuItemTurnOffControlOnExit,
             this.toolStripMenuItemForbidUnsafeSettings,
             this.toolStripMenuItemMinimizeToTrayOnClose,
-            this.toolStripMenuItemAutoRefreshStats});
+            this.toolStripMenuItemAutoRefreshStats,
+            this.toolStripMenuItemRefreshInterval});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
             this.toolStripMenuItem1.Text = "Advanced";
@@ -201,6 +203,13 @@
             this.toolStripMenuItemAutoRefreshStats.Size = new System.Drawing.Size(207, 22);
             this.toolStripMenuItemAutoRefreshStats.Text = "Auto refresh stats";
             this.toolStripMenuItemAutoRefreshStats.Click += new System.EventHandler(this.toolStripMenuItemAutoRefreshStats_Click);
+            // 
+            // toolStripMenuItemRefreshInterval
+            // 
+            this.toolStripMenuItemRefreshInterval.Name = "toolStripMenuItemRefreshInterval";
+            this.toolStripMenuItemRefreshInterval.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemRefreshInterval.Text = "Refresh interval: 3s";
+            this.toolStripMenuItemRefreshInterval.Click += new System.EventHandler(this.toolStripMenuItemRefreshInterval_Click);
             // 
             // checkBoxFanCurve
             // 
@@ -281,6 +290,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCheckForUpdates;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMinimizeToTrayOnClose;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRefreshInterval;
         private System.Windows.Forms.CheckBox checkBoxFanCurve;
         private System.Windows.Forms.Button buttonFanCurveSettings;
     }
