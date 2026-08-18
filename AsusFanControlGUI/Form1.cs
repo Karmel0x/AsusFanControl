@@ -1,5 +1,7 @@
 using AsusFanControl;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AsusFanControlGUI
@@ -30,7 +32,6 @@ namespace AsusFanControlGUI
             fanCurve.IsEnabled = fanCurveMode;
             checkBoxFanCurve.Checked = fanCurveMode;
             
-            // Populate the refresh interval menu label
             UpdateRefreshIntervalMenuLabel();
             
             if (fanCurveMode)
@@ -116,25 +117,35 @@ namespace AsusFanControlGUI
 
         private void TimerEventProcessor(object sender, EventArgs e)
         {
-            // Fetch RPM and temperature into the UI labels first
             buttonRefreshRPM_Click(sender, e);
             buttonRefreshCPUTemp_Click(sender, e);
             
-            if (fanCurveMode && fanCurve.IsEnabled)
+            if (fanCurveMode && fanCurve.IsEnabled && checkBoxTurnOn.Checked)
             {
-                // Use the UI-level temperature that was just read above.
-                // This avoids a second system-level call and keeps the fan curve
-                // operating on the same data the user sees on screen.
-                var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                int rawTargetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                int targetSpeed = ApplySafetyLimits(rawTargetSpeed);
                 
                 if (targetSpeed != fanSpeed)
                 {
                     fanSpeed = targetSpeed;
                     asusControl.SetFanSpeeds(targetSpeed);
-                    trackBarFanSpeed.Value = targetSpeed;
+                    trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
                     labelValue.Text = targetSpeed.ToString();
                 }
             }
+        }
+
+        private int ApplySafetyLimits(int speed)
+        {
+            if (speed <= 0)
+                return 0;
+
+            if (Properties.Settings.Default.forbidUnsafeSettings)
+            {
+                return Math.Max(40, Math.Min(99, speed));
+            }
+
+            return Math.Max(0, Math.Min(100, speed));
         }
 
         private void toolStripMenuItemTurnOffControlOnExit_CheckedChanged(object sender, EventArgs e)
@@ -147,6 +158,17 @@ namespace AsusFanControlGUI
         {
             Properties.Settings.Default.forbidUnsafeSettings = toolStripMenuItemForbidUnsafeSettings.Checked;
             Properties.Settings.Default.Save();
+
+            if (toolStripMenuItemForbidUnsafeSettings.Checked)
+            {
+                if (trackBarFanSpeed.Value < 40)
+                    trackBarFanSpeed.Value = 40;
+                else if (trackBarFanSpeed.Value > 99)
+                    trackBarFanSpeed.Value = 99;
+
+                if (checkBoxTurnOn.Checked)
+                    setFanSpeed();
+            }
         }
 
         private void toolStripMenuItemMinimizeToTrayOnClose_Click(object sender, EventArgs e)
@@ -173,7 +195,40 @@ namespace AsusFanControlGUI
 
         private void toolStripMenuItemCheckForUpdates_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/Karmel0x/AsusFanControl/releases");
+            try
+            {
+                Process.Start(new ProcessStartInfo("https://github.com/Karmel0x/AsusFanControl/releases") { UseShellExecute = true });
+            }
+            catch { }
+        }
+
+        private void toolStripMenuItemRunAsSystem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string batPath = Path.Combine(baseDir, "run.bat");
+
+                if (!File.Exists(batPath))
+                {
+                    MessageBox.Show("run.bat was not found in the application directory.", "File Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = batPath,
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+
+                Process.Start(psi);
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to launch as SYSTEM: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void setFanSpeed()
@@ -181,7 +236,9 @@ namespace AsusFanControlGUI
             if (fanCurveMode && fanCurve.IsEnabled)
                 return;
 
-            var value = trackBarFanSpeed.Value;
+            var rawValue = trackBarFanSpeed.Value;
+            var value = ApplySafetyLimits(rawValue);
+
             Properties.Settings.Default.fanSpeed = value;
             Properties.Settings.Default.Save();
 
@@ -210,6 +267,16 @@ namespace AsusFanControlGUI
                     asusControl.SetFanSpeeds(0);
                     fanSpeed = 0;
                     labelValue.Text = "turned off";
+                }
+                else
+                {
+                    buttonRefreshCPUTemp_Click(sender, e);
+                    int rawTarget = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                    int target = ApplySafetyLimits(rawTarget);
+                    fanSpeed = target;
+                    asusControl.SetFanSpeeds(target);
+                    trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, target));
+                    labelValue.Text = target.ToString();
                 }
                 return;
             }
@@ -247,8 +314,6 @@ namespace AsusFanControlGUI
         {
             var rawTemp = asusControl.Thermal_Read_Cpu_Temperature();
             labelCPUTemp.Text = $"{rawTemp}";
-            // Cache the last read temperature so the fan curve can use it
-            // without making a redundant system-level call
             lastReadTemp = (int)rawTemp;
         }
 
@@ -273,9 +338,9 @@ namespace AsusFanControlGUI
                     timerRefreshStats();
                 }
                 
-                // Do an immediate read so lastReadTemp is fresh before the timer fires
                 buttonRefreshCPUTemp_Click(sender, e);
-                var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                int rawTarget = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                int targetSpeed = ApplySafetyLimits(rawTarget);
                 fanSpeed = targetSpeed;
                 asusControl.SetFanSpeeds(targetSpeed);
                 trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
@@ -290,7 +355,8 @@ namespace AsusFanControlGUI
 
         private void buttonFanCurveSettings_Click(object sender, EventArgs e)
         {
-            var settingsForm = new FanCurveSettingsForm(fanCurve);
+            // Pass lastReadTemp so the current CPU temperature line is shown on the graph!
+            var settingsForm = new FanCurveSettingsForm(fanCurve, lastReadTemp);
             if (settingsForm.ShowDialog() == DialogResult.OK)
             {
                 fanCurve = settingsForm.FanCurve;
@@ -300,8 +366,8 @@ namespace AsusFanControlGUI
                 
                 if (fanCurveMode && fanCurve.IsEnabled && checkBoxTurnOn.Checked)
                 {
-                    // Use the already-cached UI temperature; no extra system call needed
-                    var targetSpeed = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                    int rawTarget = fanCurve.GetFanSpeedForTemperature(lastReadTemp);
+                    int targetSpeed = ApplySafetyLimits(rawTarget);
                     fanSpeed = targetSpeed;
                     asusControl.SetFanSpeeds(targetSpeed);
                     trackBarFanSpeed.Value = Math.Max(0, Math.Min(100, targetSpeed));
@@ -319,7 +385,7 @@ namespace AsusFanControlGUI
                     Properties.Settings.Default.refreshIntervalMs = dlg.IntervalMs;
                     Properties.Settings.Default.Save();
                     UpdateRefreshIntervalMenuLabel();
-                    timerRefreshStats(); // restart timer with new interval
+                    timerRefreshStats();
                 }
             }
         }
@@ -329,6 +395,5 @@ namespace AsusFanControlGUI
             var seconds = Properties.Settings.Default.refreshIntervalMs / 1000.0;
             toolStripMenuItemRefreshInterval.Text = $"Refresh interval: {seconds:0.#}s";
         }
-
     }
 }

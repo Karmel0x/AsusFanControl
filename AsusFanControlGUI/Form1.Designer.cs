@@ -46,6 +46,7 @@ namespace AsusFanControlGUI
             this.toolStripMenuItemMinimizeToTrayOnClose = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAutoRefreshStats = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRefreshInterval = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRunAsSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxFanCurve = new System.Windows.Forms.CheckBox();
             this.buttonFanCurveSettings = new System.Windows.Forms.Button();
             this.toolStripMenuItemCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -167,7 +168,8 @@ namespace AsusFanControlGUI
             this.toolStripMenuItemForbidUnsafeSettings,
             this.toolStripMenuItemMinimizeToTrayOnClose,
             this.toolStripMenuItemAutoRefreshStats,
-            this.toolStripMenuItemRefreshInterval});
+            this.toolStripMenuItemRefreshInterval,
+            this.toolStripMenuItemRunAsSystem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
             this.toolStripMenuItem1.Text = "Advanced";
@@ -176,7 +178,7 @@ namespace AsusFanControlGUI
             // 
             this.toolStripMenuItemTurnOffControlOnExit.CheckOnClick = true;
             this.toolStripMenuItemTurnOffControlOnExit.Name = "toolStripMenuItemTurnOffControlOnExit";
-            this.toolStripMenuItemTurnOffControlOnExit.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemTurnOffControlOnExit.Size = new System.Drawing.Size(225, 22);
             this.toolStripMenuItemTurnOffControlOnExit.Text = "Turn off control on exit";
             this.toolStripMenuItemTurnOffControlOnExit.CheckedChanged += new System.EventHandler(this.toolStripMenuItemTurnOffControlOnExit_CheckedChanged);
             // 
@@ -184,15 +186,15 @@ namespace AsusFanControlGUI
             // 
             this.toolStripMenuItemForbidUnsafeSettings.CheckOnClick = true;
             this.toolStripMenuItemForbidUnsafeSettings.Name = "toolStripMenuItemForbidUnsafeSettings";
-            this.toolStripMenuItemForbidUnsafeSettings.Size = new System.Drawing.Size(207, 22);
-            this.toolStripMenuItemForbidUnsafeSettings.Text = "Forbid unsafe settings";
+            this.toolStripMenuItemForbidUnsafeSettings.Size = new System.Drawing.Size(225, 22);
+            this.toolStripMenuItemForbidUnsafeSettings.Text = "Forbid unsafe settings (40-99%)";
             this.toolStripMenuItemForbidUnsafeSettings.CheckedChanged += new System.EventHandler(this.toolStripMenuItemForbidUnsafeSettings_CheckedChanged);
             // 
             // toolStripMenuItemMinimizeToTrayOnClose
             // 
             this.toolStripMenuItemMinimizeToTrayOnClose.CheckOnClick = true;
             this.toolStripMenuItemMinimizeToTrayOnClose.Name = "toolStripMenuItemMinimizeToTrayOnClose";
-            this.toolStripMenuItemMinimizeToTrayOnClose.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemMinimizeToTrayOnClose.Size = new System.Drawing.Size(225, 22);
             this.toolStripMenuItemMinimizeToTrayOnClose.Text = "Minimize to tray on close";
             this.toolStripMenuItemMinimizeToTrayOnClose.Click += new System.EventHandler(this.toolStripMenuItemMinimizeToTrayOnClose_Click);
             // 
@@ -200,16 +202,23 @@ namespace AsusFanControlGUI
             // 
             this.toolStripMenuItemAutoRefreshStats.CheckOnClick = true;
             this.toolStripMenuItemAutoRefreshStats.Name = "toolStripMenuItemAutoRefreshStats";
-            this.toolStripMenuItemAutoRefreshStats.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemAutoRefreshStats.Size = new System.Drawing.Size(225, 22);
             this.toolStripMenuItemAutoRefreshStats.Text = "Auto refresh stats";
             this.toolStripMenuItemAutoRefreshStats.Click += new System.EventHandler(this.toolStripMenuItemAutoRefreshStats_Click);
             // 
             // toolStripMenuItemRefreshInterval
             // 
             this.toolStripMenuItemRefreshInterval.Name = "toolStripMenuItemRefreshInterval";
-            this.toolStripMenuItemRefreshInterval.Size = new System.Drawing.Size(207, 22);
+            this.toolStripMenuItemRefreshInterval.Size = new System.Drawing.Size(225, 22);
             this.toolStripMenuItemRefreshInterval.Text = "Refresh interval: 3s";
             this.toolStripMenuItemRefreshInterval.Click += new System.EventHandler(this.toolStripMenuItemRefreshInterval_Click);
+            // 
+            // toolStripMenuItemRunAsSystem
+            // 
+            this.toolStripMenuItemRunAsSystem.Name = "toolStripMenuItemRunAsSystem";
+            this.toolStripMenuItemRunAsSystem.Size = new System.Drawing.Size(225, 22);
+            this.toolStripMenuItemRunAsSystem.Text = "⚡ Relaunch as SYSTEM (run.bat)";
+            this.toolStripMenuItemRunAsSystem.Click += new System.EventHandler(this.toolStripMenuItemRunAsSystem_Click);
             // 
             // checkBoxFanCurve
             // 
@@ -291,8 +300,8 @@ namespace AsusFanControlGUI
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemMinimizeToTrayOnClose;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRefreshInterval;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRunAsSystem;
         private System.Windows.Forms.CheckBox checkBoxFanCurve;
         private System.Windows.Forms.Button buttonFanCurveSettings;
     }
 }
-

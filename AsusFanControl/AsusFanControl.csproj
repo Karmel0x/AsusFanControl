@@ -10,19 +10,26 @@
     <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Platforms>x64</Platforms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
-  <!-- SDK-style projects auto-include *.cs; exclude the old Properties folder files
-       that duplicate info now handled by the SDK itself -->
+  <!-- SDK-style projects auto-include *.cs; exclude the old Properties folder files -->
   <ItemGroup>
     <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
 
-  <!-- AsusWinIO64.dll is a native x64 DLL that must sit next to the EXE at runtime.
-       When publishing as SingleFile it will be extracted to a temp folder automatically
-       because IncludeNativeLibrariesForSelfExtract is set below. -->
+  <!-- Native DLL and elevate/launch tools -->
   <ItemGroup>
     <Content Include="AsusWinIO64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="PsExec.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="run.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
