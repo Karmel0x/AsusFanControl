@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AsusFanControlGUI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
@@ -17,5 +17,16 @@
     <Setting Name="autoRefreshStats" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-  </Settings>
+    <Setting Name="fanCurveEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="fanCurveData" Type="System.String" Scope="User">
+      <Value Profile="(Default)">30,30;50,50;70,80;90,100</Value>
+    </Setting>
+    <Setting Name="refreshIntervalMs" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3000</Value>
+    </Setting>
+    <Setting Name="runAtStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>  </Settings>
 </SettingsFile>
