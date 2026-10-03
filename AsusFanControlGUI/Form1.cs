@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using AsusFanControl;
 using System;
 using System.Diagnostics;
@@ -25,6 +26,17 @@ namespace AsusFanControlGUI
             toolStripMenuItemForbidUnsafeSettings.Checked = Properties.Settings.Default.forbidUnsafeSettings;
             toolStripMenuItemMinimizeToTrayOnClose.Checked = Properties.Settings.Default.minimizeToTrayOnClose;
             toolStripMenuItemAutoRefreshStats.Checked = Properties.Settings.Default.autoRefreshStats;
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false))
+                {
+                    toolStripMenuItemRunAtStartup.Checked = key?.GetValue("AsusFanControl") != null;
+                }
+            }
+            catch
+            {
+                toolStripMenuItemRunAtStartup.Checked = Properties.Settings.Default.runAtStartup;
+            }
             trackBarFanSpeed.Value = Properties.Settings.Default.fanSpeed;
             
             fanCurve = FanCurve.DeserializeFromString(Properties.Settings.Default.fanCurveData);
@@ -394,6 +406,46 @@ namespace AsusFanControlGUI
         {
             var seconds = Properties.Settings.Default.refreshIntervalMs / 1000.0;
             toolStripMenuItemRefreshInterval.Text = $"Refresh interval: {seconds:0.#}s";
+        }
+
+        private void SetStartupRegistry(bool enable)
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string batPath = Path.Combine(baseDir, "run.bat");
+                string targetPath = File.Exists(batPath) ? batPath : Application.ExecutablePath;
+                const string runKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+                const string appName = "AsusFanControl";
+
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(runKeyPath, true))
+                {
+                    if (key != null)
+                    {
+                        if (enable)
+                        {
+                            key.SetValue(appName, $"\"{targetPath}\"");
+                        }
+                        else
+                        {
+                            key.DeleteValue(appName, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to update startup registry key: " + ex.Message,
+                    "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void toolStripMenuItemRunAtStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            bool enable = toolStripMenuItemRunAtStartup.Checked;
+            Properties.Settings.Default.runAtStartup = enable;
+            Properties.Settings.Default.Save();
+            SetStartupRegistry(enable);
         }
     }
 }

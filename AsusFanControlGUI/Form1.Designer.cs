@@ -47,6 +47,7 @@ namespace AsusFanControlGUI
             this.toolStripMenuItemAutoRefreshStats = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRefreshInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRunAsSystem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRunAtStartup = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxFanCurve = new System.Windows.Forms.CheckBox();
             this.buttonFanCurveSettings = new System.Windows.Forms.Button();
             this.toolStripMenuItemCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,6 +170,7 @@ namespace AsusFanControlGUI
             this.toolStripMenuItemMinimizeToTrayOnClose,
             this.toolStripMenuItemAutoRefreshStats,
             this.toolStripMenuItemRefreshInterval,
+            this.toolStripMenuItemRunAtStartup,
             this.toolStripMenuItemRunAsSystem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(72, 20);
@@ -219,6 +221,14 @@ namespace AsusFanControlGUI
             this.toolStripMenuItemRunAsSystem.Size = new System.Drawing.Size(225, 22);
             this.toolStripMenuItemRunAsSystem.Text = "⚡ Relaunch as SYSTEM (run.bat)";
             this.toolStripMenuItemRunAsSystem.Click += new System.EventHandler(this.toolStripMenuItemRunAsSystem_Click);
+            // 
+            // toolStripMenuItemRunAtStartup
+            // 
+            this.toolStripMenuItemRunAtStartup.CheckOnClick = true;
+            this.toolStripMenuItemRunAtStartup.Name = "toolStripMenuItemRunAtStartup";
+            this.toolStripMenuItemRunAtStartup.Size = new System.Drawing.Size(225, 22);
+            this.toolStripMenuItemRunAtStartup.Text = "Run at startup";
+            this.toolStripMenuItemRunAtStartup.CheckedChanged += new System.EventHandler(this.toolStripMenuItemRunAtStartup_CheckedChanged);
             // 
             // checkBoxFanCurve
             // 
@@ -301,6 +311,7 @@ namespace AsusFanControlGUI
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemAutoRefreshStats;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRefreshInterval;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRunAsSystem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemRunAtStartup;
         private System.Windows.Forms.CheckBox checkBoxFanCurve;
         private System.Windows.Forms.Button buttonFanCurveSettings;
     }

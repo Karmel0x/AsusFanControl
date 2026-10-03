@@ -117,6 +117,17 @@ namespace AsusFanControlGUI.Properties {
             set {
                 this["refreshIntervalMs"] = value;
             }
+        }        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool runAtStartup {
+            get {
+                return ((bool)(this["runAtStartup"]));
+            }
+            set {
+                this["runAtStartup"] = value;
+            }
         }
     }
 }

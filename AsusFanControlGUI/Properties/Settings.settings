@@ -26,5 +26,7 @@
     <Setting Name="refreshIntervalMs" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3000</Value>
     </Setting>
-  </Settings>
+    <Setting Name="runAtStartup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>  </Settings>
 </SettingsFile>
